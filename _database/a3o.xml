@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 3.2.4
+- http://www.phpmyadmin.net
+-
+- Host: localhost
+- Erstellungszeit: 30. Juli 2010 um 17:58
+- Server Version: 5.1.41
+- PHP-Version: 5.3.1
+-->
+
+<!--
+- Datenbank: 'a3o'
+-->
+<a3o>
+  <!-- Tabelle a3o_alliancenations -->
+    <a3o_alliancenations>
+        <alliancenation_alliance>1</alliancenation_alliance>
+        <alliancenation_nation>1</alliancenation_nation>
+    </a3o_alliancenations>
+  <!-- Tabelle a3o_alliances -->
+    <a3o_alliances>
+        <alliance_id>1</alliance_id>
+        <alliance_name>Allies</alliance_name>
+        <alliance_game>1</alliance_game>
+    </a3o_alliances>
+  <!-- Tabelle a3o_basezoneoptions -->
+    <a3o_basezoneoptions>
+        <basezoneoption_basezone>1</basezoneoption_basezone>
+        <basezoneoption_name>production</basezoneoption_name>
+        <basezoneoption_value>2</basezoneoption_value>
+    </a3o_basezoneoptions>
+    <a3o_basezoneoptions>
+        <basezoneoption_basezone>2</basezoneoption_basezone>
+        <basezoneoption_name>production</basezoneoption_name>
+        <basezoneoption_value>1</basezoneoption_value>
+    </a3o_basezoneoptions>
+    <a3o_basezoneoptions>
+        <basezoneoption_basezone>1</basezoneoption_basezone>
+        <basezoneoption_name>victorycity</basezoneoption_name>
+        <basezoneoption_value>1</basezoneoption_value>
+    </a3o_basezoneoptions>
+    <a3o_basezoneoptions>
+        <basezoneoption_basezone>3</basezoneoption_basezone>
+        <basezoneoption_name>water</basezoneoption_name>
+        <basezoneoption_value>1</basezoneoption_value>
+    </a3o_basezoneoptions>
+  <!-- Tabelle a3o_basezones -->
+    <a3o_basezones>
+        <basezone_id>1</basezone_id>
+        <basezone_game>1</basezone_game>
+        <basezone_name>Archangel</basezone_name>
+        <basezone_production>2</basezone_production>
+        <basezone_water>0</basezone_water>
+        <basezone_owner>1</basezone_owner>
+    </a3o_basezones>
+    <a3o_basezones>
+        <basezone_id>2</basezone_id>
+        <basezone_game>1</basezone_game>
+        <basezone_name>Belarus</basezone_name>
+        <basezone_production>1</basezone_production>
+        <basezone_water>0</basezone_water>
+        <basezone_owner>1</basezone_owner>
+    </a3o_basezones>
+    <a3o_basezones>
+        <basezone_id>3</basezone_id>
+        <basezone_game>1</basezone_game>
+        <basezone_name>SZ Water</basezone_name>
+        <basezone_production>0</basezone_production>
+        <basezone_water>1</basezone_water>
+        <basezone_owner>0</basezone_owner>
+    </a3o_basezones>
+  <!-- Tabelle a3o_connections -->
+    <a3o_connections>
+        <connection_firstzone>1</connection_firstzone>
+        <connection_secondzone>2</connection_secondzone>
+    </a3o_connections>
+  <!-- Tabelle a3o_games -->
+    <a3o_games>
+        <game_id>1</game_id>
+        <game_name>A&amp;A 4th Edition</game_name>
+        <game_active>0</game_active>
+    </a3o_games>
+  <!-- Tabelle a3o_matches -->
+    <a3o_matches>
+        <match_id>1</match_id>
+        <match_turn>0</match_turn>
+        <match_activenation>1</match_activenation>
+        <match_game>1</match_game>
+    </a3o_matches>
+  <!-- Tabelle a3o_nations -->
+    <a3o_nations>
+        <nation_id>1</nation_id>
+        <nation_name>Russia</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+  <!-- Tabelle a3o_pieces -->
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>5</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>2</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>3</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>2</pieces_type>
+        <pieces_count>2</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>2</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces>
+  <!-- Tabelle a3o_players -->
+    <a3o_players>
+        <player_user>1</player_user>
+        <player_nation>1</player_nation>
+        <player_match>1</player_match>
+    </a3o_players>
+  <!-- Tabelle a3o_typeoptions -->
+    <a3o_typeoptions>
+        <typeoption_type>1</typeoption_type>
+        <typeoption_name>movement</typeoption_name>
+        <typeoption_value>1</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>2</typeoption_type>
+        <typeoption_name>movement</typeoption_name>
+        <typeoption_value>2</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>1</typeoption_type>
+        <typeoption_name>attack</typeoption_name>
+        <typeoption_value>1</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>1</typeoption_type>
+        <typeoption_name>defense</typeoption_name>
+        <typeoption_value>2</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>2</typeoption_type>
+        <typeoption_name>attack</typeoption_name>
+        <typeoption_value>3</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>2</typeoption_type>
+        <typeoption_name>defense</typeoption_name>
+        <typeoption_value>3</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>3</typeoption_type>
+        <typeoption_name>factory</typeoption_name>
+        <typeoption_value>1</typeoption_value>
+    </a3o_typeoptions>
+  <!-- Tabelle a3o_types -->
+    <a3o_types>
+        <type_id>1</type_id>
+        <type_name>infantry</type_name>
+        <type_game>1</type_game>
+    </a3o_types>
+    <a3o_types>
+        <type_id>2</type_id>
+        <type_name>tank</type_name>
+        <type_game>1</type_game>
+    </a3o_types>
+    <a3o_types>
+        <type_id>3</type_id>
+        <type_name>factory</type_name>
+        <type_game>1</type_game>
+    </a3o_types>
+  <!-- Tabelle a3o_users -->
+    <a3o_users>
+        <user_id>1</user_id>
+    </a3o_users>
+  <!-- Tabelle a3o_zones -->
+    <a3o_zones>
+        <zone_id>1</zone_id>
+        <zone_basezone>1</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>1</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>2</zone_id>
+        <zone_basezone>2</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>1</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>3</zone_id>
+        <zone_basezone>3</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>0</zone_owner>
+    </a3o_zones>
+</a3o>
