@@ -49,6 +49,7 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 		A3MatchZoneRegistry::initializeRegistry( new A3MatchZonePDOFactory( $pdo, BasicA3MatchZoneFactoryTest::TEST_MATCH_ID ) );
 		A3GameTypeRegistry::initializeRegistry( new A3GameTypePDOFactory( $pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID ) );
 		A3GameNationRegistry::initializeRegistry(  new A3GameNationPDOFactory( $pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID ) );
+		A3GameAllianceRegistry::initializeRegistry(  new A3GameAlliancePDOFactory( $pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID ) );
 	}
 	
 	protected function tearDown( )
