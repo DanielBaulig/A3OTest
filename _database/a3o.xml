@@ -6,7 +6,7 @@
 - http://www.phpmyadmin.net
 -
 - Host: localhost
-- Erstellungszeit: 30. Juli 2010 um 17:58
+- Erstellungszeit: 31. Juli 2010 um 10:35
 - Server Version: 5.1.41
 - PHP-Version: 5.3.1
 -->
@@ -20,10 +20,44 @@
         <alliancenation_alliance>1</alliancenation_alliance>
         <alliancenation_nation>1</alliancenation_nation>
     </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>1</alliancenation_alliance>
+        <alliancenation_nation>2</alliancenation_nation>
+    </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>1</alliancenation_alliance>
+        <alliancenation_nation>4</alliancenation_nation>
+    </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>1</alliancenation_alliance>
+        <alliancenation_nation>6</alliancenation_nation>
+    </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>2</alliancenation_alliance>
+        <alliancenation_nation>3</alliancenation_nation>
+    </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>2</alliancenation_alliance>
+        <alliancenation_nation>5</alliancenation_nation>
+    </a3o_alliancenations>
+    <a3o_alliancenations>
+        <alliancenation_alliance>3</alliancenation_alliance>
+        <alliancenation_nation>1</alliancenation_nation>
+    </a3o_alliancenations>
   <!-- Tabelle a3o_alliances -->
     <a3o_alliances>
         <alliance_id>1</alliance_id>
         <alliance_name>Allies</alliance_name>
+        <alliance_game>1</alliance_game>
+    </a3o_alliances>
+    <a3o_alliances>
+        <alliance_id>2</alliance_id>
+        <alliance_name>Axis</alliance_name>
+        <alliance_game>1</alliance_game>
+    </a3o_alliances>
+    <a3o_alliances>
+        <alliance_id>3</alliance_id>
+        <alliance_name>UDSSR</alliance_name>
         <alliance_game>1</alliance_game>
     </a3o_alliances>
   <!-- Tabelle a3o_basezoneoptions -->
@@ -80,7 +114,7 @@
   <!-- Tabelle a3o_games -->
     <a3o_games>
         <game_id>1</game_id>
-        <game_name>A&amp;A 4th Edition</game_name>
+        <game_name>AA 4th Edition</game_name>
         <game_active>0</game_active>
     </a3o_games>
   <!-- Tabelle a3o_matches -->
@@ -94,6 +128,31 @@
     <a3o_nations>
         <nation_id>1</nation_id>
         <nation_name>Russia</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+    <a3o_nations>
+        <nation_id>2</nation_id>
+        <nation_name>Britain</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+    <a3o_nations>
+        <nation_id>3</nation_id>
+        <nation_name>Germany</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+    <a3o_nations>
+        <nation_id>4</nation_id>
+        <nation_name>China</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+    <a3o_nations>
+        <nation_id>5</nation_id>
+        <nation_name>Japan</nation_name>
+        <nation_game>1</nation_game>
+    </a3o_nations>
+    <a3o_nations>
+        <nation_id>6</nation_id>
+        <nation_name>USA</nation_name>
         <nation_game>1</nation_game>
     </a3o_nations>
   <!-- Tabelle a3o_pieces -->
