@@ -38,10 +38,8 @@ class BasicA3MatchZoneFactoryTest extends PHPUnit_Framework_TestCase
 	{
 		$zone = $factory->createSingleProduct( 'Archangel' );
 		$this->assertType( 'A3MatchZone', $zone );
-		$this->assertEquals('Archangel', $zone->getName( ) );
 		$zone = $factory->createSingleProduct( 'Belarus' );
 		$this->assertType( 'A3MatchZone', $zone );
-		$this->assertEquals('Belarus', $zone->getName( ) );
 		$this->setExpectedException( 'Exception' );
 		$zone = $factory->createSingleProduct( 'Fail' );
 	}
