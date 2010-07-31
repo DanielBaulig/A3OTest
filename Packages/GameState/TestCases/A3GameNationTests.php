@@ -5,9 +5,191 @@ class A3GameNationTestSuite extends PHPUnit_Framework_TestSuite
 {
 	public static function suite( )
 	{
-		$suite = new A3GameNationTestSuite( 'A3GameNation Test Cases' );		
+		$suite = new A3GameNationTestSuite( 'A3GameNation Test Cases' );
+		$suite->addTestSuite( 'A3GameNationFactoryTest' );
+		$suite->addTestSuite( 'A3GameNationRegistryTest' );		
 		$suite->addTestSuite( 'BasicA3GameNationTest' );
+		
 		return $suite;
+	}
+}
+
+class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
+{
+	protected $pdo;
+	
+	public function setUp( )
+	{
+		$this->pdo = $this->sharedFixture['pdo'];
+	}
+	
+	public function testLoadAllNations( )
+	{
+		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$nations = $factory->createAllProducts( );
+		$this->assertArrayHasKey( 'Russia' , $nations );
+		$this->assertArrayHasKey( 'Germany', $nations );
+		$this->assertArrayHasKey( 'Japan', $nations );
+		$this->assertArrayHasKey( 'USA', $nations );
+		$this->assertArrayHasKey( 'Britain', $nations );
+		$this->assertArrayHasKey( 'China', $nations );
+		$this->assertEquals( 6, count( $nations ) );
+	}
+	
+	public function testLoadNoNations( )
+	{
+		$factory = new A3GameNationPDOFactory( $this->pdo, -1 );
+		$nations = $factory->createAllProducts( );
+		$this->assertEquals( 0, count( $nations ) );
+	}
+	
+	/**
+	 * @dataProvider failLoadSingleNationProvider
+	 */
+	public function testFailLoadSingleNation( $nation )
+	{
+		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$this->setExpectedException( 'DomainException' );
+		$nation = $factory->createSingleProduct( $nation );
+	} 
+	
+	public function failLoadSingleNationProvider( )
+	{
+		return array(
+			array(
+				'failNation'
+			),
+			array(
+				''
+			),
+			array(
+				null
+			),
+			array(
+				12345
+			),
+		);
+	}
+	
+	/**
+	 * @dataProvider loadSingleNationProvider
+	 */
+	public function testLoadSingleNation( $nation )
+	{
+		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$nation = $factory->createSingleProduct( $nation );
+		$this->assertType( 'A3GameNation', $nation );
+	}
+	
+	public function loadSingleNationProvider( )
+	{
+		return array(
+			array(
+				'Russia',
+			),
+			array(
+				'Germany',
+			),
+			array(
+				'USA',
+			),
+			array(
+				'Britain',
+			),
+			array(
+				'Japan',
+			),
+			array(
+				'China',
+			),
+		);
+	}
+}
+
+class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
+{
+	protected $pdo;
+	
+	public function setUp( )
+	{
+		$this->pdo = $this->sharedFixture['pdo'];
+	}
+	
+	public function testReinitializationException( )
+	{
+		$this->setExpectedException( 'Exception' );		
+		A3GameNationRegistry::initializeRegistry( new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID ) );
+	}
+	
+	public function testGetInstance( )
+	{
+		$this->assertType( 'A3GameNationRegistry', A3GameNationRegistry::getInstance( ) );	
+	}
+	
+	/**
+	 * @dataProvider invalidGetNationProvider
+	 */
+	public function testInvalidGetNation( $nation )
+	{
+		$this->setExpectedException( 'DomainException' );
+		A3GameNationRegistry::getNation( $nation );
+	}
+	
+	public function invalidGetNationProvider( )
+	{
+		return array(
+			array(
+				'failNation',
+			),
+			array(
+				'',
+			),
+			array(
+				null,
+			),
+			array(
+				123456,
+			),
+		);
+	}
+	
+	/**
+	 * @dataProvider validGetNationProvider
+	 */
+	public function testValidGetNation( $nation )
+	{
+		$aNation = A3GameNationRegistry::getNation( $nation );
+		$this->assertType( 'A3GameNation', $aNation );
+		
+		$sameNation = A3GameNationRegistry::getNation( $nation );
+		$this->assertType( 'A3GameNation', $sameNation );
+		
+		// the registry should return the same object instance!
+		$this->assertTrue( $aNation === $sameNation );
+	}
+	
+	public function validGetNationProvider( )
+	{
+		return array(
+			array(
+				'Russia',
+			),
+			array(
+				'Germany',
+			),
+			array(
+				'USA',
+			),
+			array(
+				'Britain',
+			),
+			array(
+				'Japan',
+			),
+			array(
+				'China',
+			),
+		);
 	}
 }
 
@@ -61,8 +243,8 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 		return array(
 			array(
 				'Britain',
-			//  'USA',
-			//	'China',
+			  	'USA',
+				'China',
 			)
 		);
 	}
