@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once $basedir . '/../A3O/include/classes/GameState/A3GameState.php';
+require_once $basedir . '/../A3O/include/classes/MatchState/A3/A3MatchState.php';
 
 class GameStateSuite  extends PHPUnit_Framework_TestSuite
 {
@@ -9,10 +9,12 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 		$suite = new GameStateSuite( 'GameState Test Suite' );
 
 		$files = array(
-			'A3GameNationTests.php',
-			'A3MatchZoneTests.php',
-			'A3GameTypeTests.php',
-			'A3GameAllianceTests.php'
+			'GameNationTests.php',
+			'MatchZoneTests.php',
+			'GameTypeTests.php',
+			'GameAllianceTests.php',
+			'A3/A3MatchZoneTests.php',
+			'A3/A3GameTypeTests.php',
 		);
 
 		
@@ -22,10 +24,13 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 		}
 		
 		$suites = array(
-			A3GameNationTestSuite::suite( ),
-			A3MatchZoneTestSuite::suite( ),
-			A3GameTypeTestSuite::suite( ),
-			A3GameAllianceTestSuite::suite( ),
+			GameNationTestSuite::suite( ),
+			MatchZoneTestSuite::suite( ),
+			GameTypeTestSuite::suite( ),
+			GameAllianceTestSuite::suite( ),
+			A3MatchZoneTestSuite::suite(),
+			A3GameTypeTestSuite::suite(),
+			
 		);
 		
 		foreach( $suites as $aSuite )

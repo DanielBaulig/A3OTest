@@ -1,20 +1,20 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class A3GameNationTestSuite extends PHPUnit_Framework_TestSuite
+class GameNationTestSuite extends PHPUnit_Framework_TestSuite
 {
 	public static function suite( )
 	{
-		$suite = new A3GameNationTestSuite( 'A3GameNation Test Cases' );
-		$suite->addTestSuite( 'A3GameNationFactoryTest' );
-		$suite->addTestSuite( 'A3GameNationRegistryTest' );		
-		$suite->addTestSuite( 'BasicA3GameNationTest' );
+		$suite = new GameNationTestSuite( 'GameNation Test Cases' );
+		$suite->addTestSuite( 'GameNationFactoryTest' );
+		$suite->addTestSuite( 'GameNationRegistryTest' );		
+		$suite->addTestSuite( 'BasicGameNationTest' );
 		
 		return $suite;
 	}
 }
 
-class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
+class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 {
 	protected $pdo;
 	
@@ -25,7 +25,7 @@ class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadAllNations( )
 	{
-		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
 		$nations = $factory->createAllProducts( );
 		$this->assertArrayHasKey( 'Russia' , $nations );
 		$this->assertArrayHasKey( 'Germany', $nations );
@@ -38,7 +38,7 @@ class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadNoNations( )
 	{
-		$factory = new A3GameNationPDOFactory( $this->pdo, -1 );
+		$factory = new GameNationPDOFactory( $this->pdo, -1 );
 		$nations = $factory->createAllProducts( );
 		$this->assertEquals( 0, count( $nations ) );
 	}
@@ -48,7 +48,7 @@ class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFailLoadSingleNation( $nation )
 	{
-		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
 		$this->setExpectedException( 'DomainException' );
 		$nation = $factory->createSingleProduct( $nation );
 	} 
@@ -76,9 +76,9 @@ class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLoadSingleNation( $nation )
 	{
-		$factory = new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
 		$nation = $factory->createSingleProduct( $nation );
-		$this->assertType( 'A3GameNation', $nation );
+		$this->assertType( 'GameNation', $nation );
 	}
 	
 	public function loadSingleNationProvider( )
@@ -106,7 +106,7 @@ class A3GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	}
 }
 
-class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
+class GameNationRegistryTest extends PHPUnit_Framework_TestCase
 {
 	protected $pdo;
 	
@@ -118,12 +118,12 @@ class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	public function testReinitializationException( )
 	{
 		$this->setExpectedException( 'Exception' );		
-		A3GameNationRegistry::initializeRegistry( new A3GameNationPDOFactory( $this->pdo, BasicA3GameTypeFactoryTest::TEST_GAME_ID ) );
+		GameNationRegistry::initializeRegistry( new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
 	}
 	
 	public function testGetInstance( )
 	{
-		$this->assertType( 'A3GameNationRegistry', A3GameNationRegistry::getInstance( ) );	
+		$this->assertType( 'GameNationRegistry', GameNationRegistry::getInstance( ) );	
 	}
 	
 	/**
@@ -132,7 +132,7 @@ class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	public function testInvalidGetNation( $nation )
 	{
 		$this->setExpectedException( 'DomainException' );
-		A3GameNationRegistry::getNation( $nation );
+		GameNationRegistry::getNation( $nation );
 	}
 	
 	public function invalidGetNationProvider( )
@@ -158,11 +158,11 @@ class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testValidGetNation( $nation )
 	{
-		$aNation = A3GameNationRegistry::getNation( $nation );
-		$this->assertType( 'A3GameNation', $aNation );
+		$aNation = GameNationRegistry::getNation( $nation );
+		$this->assertType( 'GameNation', $aNation );
 		
-		$sameNation = A3GameNationRegistry::getNation( $nation );
-		$this->assertType( 'A3GameNation', $sameNation );
+		$sameNation = GameNationRegistry::getNation( $nation );
+		$this->assertType( 'GameNation', $sameNation );
 		
 		// the registry should return the same object instance!
 		$this->assertTrue( $aNation === $sameNation );
@@ -193,7 +193,7 @@ class A3GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	}
 }
 
-class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
+class BasicGameNationTest extends PHPUnit_Framework_TestCase
 {
 	protected $pdo;
 	
@@ -203,8 +203,8 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	}
 	public function testInstanciation( )
 	{
-		$nation = new A3GameNation( array( A3GameNation::NAME => 'Test Land', A3GameNation::ALLIANCES => array( ) ) );
-		$this->assertType( 'A3GameNation', $nation ); 
+		$nation = new GameNation( array( GameNation::NAME => 'Test Land', GameNation::ALLIANCES => array( ) ) );
+		$this->assertType( 'GameNation', $nation ); 
 	}
 	
 	/**
@@ -212,7 +212,7 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testExceptionIsAlly( $ally )
 	{
-		$nation = A3GameNationRegistry::getNation( 'Russia' );
+		$nation = GameNationRegistry::getNation( 'Russia' );
 		$this->setExpectedException( 'DomainException' );
 		$nation->isAllyOf( $ally );
 	}
@@ -234,7 +234,7 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsAlly( $ally )
 	{
-		$nation = A3GameNationRegistry::getNation( 'Russia' );
+		$nation = GameNationRegistry::getNation( 'Russia' );
 		$this->assertTrue( $nation->isAllyOf( $ally ) );
 	}
 	
@@ -254,7 +254,7 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsNotAlly( $ally )
 	{
-		$nation = A3GameNationRegistry::getNation( 'Russia' );
+		$nation = GameNationRegistry::getNation( 'Russia' );
 		$this->assertFalse( $nation->isAllyOf( $ally ) );
 	}
 	
@@ -273,7 +273,7 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsInAlliance( $alliance )
 	{
-		$nation = A3GameNationRegistry::getNation( 'Russia' );
+		$nation = GameNationRegistry::getNation( 'Russia' );
 		$this->assertTrue( $nation->isInAlliance( $alliance) );
 	}
 	
@@ -291,7 +291,7 @@ class BasicA3GameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsNotInAlliance( $alliance )
 	{
-		$nation = A3GameNationRegistry::getNation( 'Russia' );
+		$nation = GameNationRegistry::getNation( 'Russia' );
 		$this->assertFalse( $nation->isInAlliance( $alliance) );
 	}
 	

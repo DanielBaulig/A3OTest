@@ -6,7 +6,7 @@
 - http://www.phpmyadmin.net
 -
 - Host: localhost
-- Erstellungszeit: 31. Juli 2010 um 10:35
+- Erstellungszeit: 01. August 2010 um 11:21
 - Server Version: 5.1.41
 - PHP-Version: 5.3.1
 -->
@@ -81,34 +81,51 @@
         <basezoneoption_name>water</basezoneoption_name>
         <basezoneoption_value>1</basezoneoption_value>
     </a3o_basezoneoptions>
+    <a3o_basezoneoptions>
+        <basezoneoption_basezone>4</basezoneoption_basezone>
+        <basezoneoption_name>production</basezoneoption_name>
+        <basezoneoption_value>3</basezoneoption_value>
+    </a3o_basezoneoptions>
   <!-- Tabelle a3o_basezones -->
     <a3o_basezones>
         <basezone_id>1</basezone_id>
         <basezone_game>1</basezone_game>
         <basezone_name>Archangel</basezone_name>
-        <basezone_production>2</basezone_production>
-        <basezone_water>0</basezone_water>
         <basezone_owner>1</basezone_owner>
     </a3o_basezones>
     <a3o_basezones>
         <basezone_id>2</basezone_id>
         <basezone_game>1</basezone_game>
         <basezone_name>Belarus</basezone_name>
-        <basezone_production>1</basezone_production>
-        <basezone_water>0</basezone_water>
         <basezone_owner>1</basezone_owner>
     </a3o_basezones>
     <a3o_basezones>
         <basezone_id>3</basezone_id>
         <basezone_game>1</basezone_game>
         <basezone_name>SZ Water</basezone_name>
-        <basezone_production>0</basezone_production>
-        <basezone_water>1</basezone_water>
         <basezone_owner>0</basezone_owner>
+    </a3o_basezones>
+    <a3o_basezones>
+        <basezone_id>4</basezone_id>
+        <basezone_game>1</basezone_game>
+        <basezone_name>West Russia</basezone_name>
+        <basezone_owner>3</basezone_owner>
     </a3o_basezones>
   <!-- Tabelle a3o_connections -->
     <a3o_connections>
         <connection_firstzone>1</connection_firstzone>
+        <connection_secondzone>2</connection_secondzone>
+    </a3o_connections>
+    <a3o_connections>
+        <connection_firstzone>1</connection_firstzone>
+        <connection_secondzone>3</connection_secondzone>
+    </a3o_connections>
+    <a3o_connections>
+        <connection_firstzone>4</connection_firstzone>
+        <connection_secondzone>1</connection_secondzone>
+    </a3o_connections>
+    <a3o_connections>
+        <connection_firstzone>4</connection_firstzone>
         <connection_secondzone>2</connection_secondzone>
     </a3o_connections>
   <!-- Tabelle a3o_games -->
@@ -180,6 +197,13 @@
         <pieces_type>1</pieces_type>
         <pieces_count>1</pieces_count>
     </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>4</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces>
+  <!-- Tabelle a3o_playeroptions -->
   <!-- Tabelle a3o_players -->
     <a3o_players>
         <player_user>1</player_user>
@@ -222,6 +246,26 @@
         <typeoption_name>factory</typeoption_name>
         <typeoption_value>1</typeoption_value>
     </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>4</typeoption_type>
+        <typeoption_name>attack</typeoption_name>
+        <typeoption_value>3</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>4</typeoption_type>
+        <typeoption_name>defense</typeoption_name>
+        <typeoption_value>4</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>4</typeoption_type>
+        <typeoption_name>movement</typeoption_name>
+        <typeoption_value>4</typeoption_value>
+    </a3o_typeoptions>
+    <a3o_typeoptions>
+        <typeoption_type>4</typeoption_type>
+        <typeoption_name>air</typeoption_name>
+        <typeoption_value>1</typeoption_value>
+    </a3o_typeoptions>
   <!-- Tabelle a3o_types -->
     <a3o_types>
         <type_id>1</type_id>
@@ -236,6 +280,11 @@
     <a3o_types>
         <type_id>3</type_id>
         <type_name>factory</type_name>
+        <type_game>1</type_game>
+    </a3o_types>
+    <a3o_types>
+        <type_id>4</type_id>
+        <type_name>fighter</type_name>
         <type_game>1</type_game>
     </a3o_types>
   <!-- Tabelle a3o_users -->
@@ -260,5 +309,11 @@
         <zone_basezone>3</zone_basezone>
         <zone_match>1</zone_match>
         <zone_owner>0</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>4</zone_id>
+        <zone_basezone>4</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>3</zone_owner>
     </a3o_zones>
 </a3o>
