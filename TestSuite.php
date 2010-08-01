@@ -16,6 +16,7 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 	
 	protected function setUp( )
 	{
+		echo 'Running A3O Unit Tests.' . "\n";
 		echo 'Setting up database connection... ';
 		$sql_host = 'localhost';
 		$sql_username = 'root';
@@ -50,6 +51,7 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 		GameTypeRegistry::initializeRegistry( new GameTypePDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
 		GameNationRegistry::initializeRegistry(  new GameNationPDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
 		GameAllianceRegistry::initializeRegistry(  new GameAlliancePDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
+		MatchPlayerRegistry::initializeRegistry(  new MatchPlayerPDOFactory($pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
 	}
 	
 	protected function tearDown( )

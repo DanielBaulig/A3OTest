@@ -15,6 +15,7 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 			'GameAllianceTests.php',
 			'A3/A3MatchZoneTests.php',
 			'A3/A3GameTypeTests.php',
+			'MatchPlayerTests.php',
 		);
 
 		
@@ -30,6 +31,7 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 			GameAllianceTestSuite::suite( ),
 			A3MatchZoneTestSuite::suite(),
 			A3GameTypeTestSuite::suite(),
+			MatchPlayerTestSuite::suite(),
 			
 		);
 		
