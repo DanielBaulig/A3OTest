@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<dataset><table name="a3o_playeroptions"><column>playeroption_player</column><column>playeroption_name</column><column>playeroption_value</column><row><value>1</value><value>UselessOption</value><value>1</value></row></table></dataset>

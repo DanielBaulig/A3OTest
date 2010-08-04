@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 
 class GameNationTestSuite extends PHPUnit_Framework_TestSuite
 {

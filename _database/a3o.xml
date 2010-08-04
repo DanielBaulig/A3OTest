@@ -6,7 +6,7 @@
 - http://www.phpmyadmin.net
 -
 - Host: localhost
-- Erstellungszeit: 01. August 2010 um 11:21
+- Erstellungszeit: 04. August 2010 um 21:37
 - Server Version: 5.1.41
 - PHP-Version: 5.3.1
 -->
@@ -180,32 +180,38 @@
         <pieces_count>5</pieces_count>
     </a3o_pieces>
     <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>2</pieces_type>
+        <pieces_count>2</pieces_count>
+    </a3o_pieces><a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>4</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces><a3o_pieces>
+        <pieces_zone>2</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces><a3o_pieces>
         <pieces_zone>2</pieces_zone>
         <pieces_nation>1</pieces_nation>
         <pieces_type>3</pieces_type>
         <pieces_count>1</pieces_count>
     </a3o_pieces>
-    <a3o_pieces>
-        <pieces_zone>1</pieces_zone>
-        <pieces_nation>1</pieces_nation>
-        <pieces_type>2</pieces_type>
-        <pieces_count>2</pieces_count>
-    </a3o_pieces>
-    <a3o_pieces>
-        <pieces_zone>2</pieces_zone>
-        <pieces_nation>1</pieces_nation>
-        <pieces_type>1</pieces_type>
-        <pieces_count>1</pieces_count>
-    </a3o_pieces>
-    <a3o_pieces>
-        <pieces_zone>1</pieces_zone>
-        <pieces_nation>1</pieces_nation>
-        <pieces_type>4</pieces_type>
-        <pieces_count>1</pieces_count>
-    </a3o_pieces>
+    
+    
+    
   <!-- Tabelle a3o_playeroptions -->
+    <a3o_playeroptions>
+        <playeroption_player>1</playeroption_player>
+        <playeroption_name>UselessOption</playeroption_name>
+        <playeroption_value>0</playeroption_value>
+    </a3o_playeroptions>
   <!-- Tabelle a3o_players -->
     <a3o_players>
+        <player_id>1</player_id>
         <player_user>1</player_user>
         <player_nation>1</player_nation>
         <player_match>1</player_match>
@@ -290,6 +296,18 @@
   <!-- Tabelle a3o_users -->
     <a3o_users>
         <user_id>1</user_id>
+    </a3o_users>
+    <a3o_users>
+        <user_id>2</user_id>
+    </a3o_users>
+    <a3o_users>
+        <user_id>3</user_id>
+    </a3o_users>
+    <a3o_users>
+        <user_id>4</user_id>
+    </a3o_users>
+    <a3o_users>
+        <user_id>5</user_id>
     </a3o_users>
   <!-- Tabelle a3o_zones -->
     <a3o_zones>

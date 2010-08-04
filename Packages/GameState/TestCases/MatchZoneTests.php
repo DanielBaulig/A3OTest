@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 
 class MatchZoneTestSuite extends PHPUnit_Framework_TestSuite
 {
@@ -9,6 +8,8 @@ class MatchZoneTestSuite extends PHPUnit_Framework_TestSuite
 		$suite->addTestSuite( 'BasicMatchZoneFactoryTest' );
 		$suite->addTestSuite( 'BasicMatchZoneRegistryTest' );
 		$suite->addTestSuite( 'BasicMatchZoneTest' );
+		$suite->addTestSuite( 'MatchZoneStorerTests' );
+		
 		return $suite;
 	}
 }
@@ -185,6 +186,68 @@ class BasicMatchZoneTest extends PHPUnit_Framework_TestCase
 					MatchZone::OPTIONS => array( 'production' => 2 ),
 				),
 			),			
+		);
+	}
+}
+
+class MatchZoneStorerTests extends PHPUnit_Framework_TestCase
+{
+	protected $pdo;
+	protected $test_db;
+	
+	public function setUp( )
+	{
+		$this->pdo = $this->sharedFixture['pdo'];
+		$this->test_db = $this->sharedFixture['test_db'];
+	}
+	
+	public function tearDown( )
+	{
+		// reset database once more
+		$this->test_db->onSetUp( );
+	}
+	
+	/**
+	 * @dataProvider storeZoneProvider
+	 */
+	public function testStoreZone( array $zoneData, $expectedZones, $expectedPieces )
+	{
+		$this->test_db->onSetUp( );
+		
+		$player = new MatchZone( $zoneData );
+		$storer = new MatchZonePDOStorer($this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+
+		$xml_postStoreZones = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedZones );
+		$xml_postStorePieces = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedPieces );
+		
+		$storer->store( $player );
+		
+		PHPUnit_Extensions_Database_TestCase::assertTablesEqual( $xml_postStoreZones->getTable('a3o_zones'), $this->test_db->getConnection()->createDataset()->getTable('a3o_zones') );
+		PHPUnit_Extensions_Database_TestCase::assertTablesEqual( $xml_postStorePieces->getTable('a3o_pieces'), $this->test_db->getConnection()->createDataset()->getTable('a3o_pieces') );
+	}
+	
+	public function storeZoneProvider( )
+	{
+		return array(
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 1, 
+					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>5, 'tank'=>2, 'fighter'=>1 ) ),
+			 	),
+			 	'phpunit_a3o.xml',
+			 	'phpunit_a3o.xml',
+			 ), 
+		);
+		//TODO: Add more test cases
+	}
+	
+	public function isUserProvider( )
+	{
+		return array(
+			array(
+				'Russia', 1,
+			),
 		);
 	}
 }

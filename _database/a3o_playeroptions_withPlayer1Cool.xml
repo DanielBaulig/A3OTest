@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 3.2.4
+- http://www.phpmyadmin.net
+-
+- Host: localhost
+- Erstellungszeit: 04. August 2010 um 22:03
+- Server Version: 5.1.41
+- PHP-Version: 5.3.1
+-->
+
+<!--
+- Datenbank: 'a3o'
+-->
+<a3o>
+  <!-- Tabelle a3o_playeroptions -->
+    
+    <a3o_playeroptions>
+        <playeroption_player>1</playeroption_player>
+        <playeroption_name>CoolOption</playeroption_name>
+        <playeroption_value>This is so cool!</playeroption_value>
+    </a3o_playeroptions>
+<a3o_playeroptions>
+        <playeroption_player>1</playeroption_player>
+        <playeroption_name>UselessOption</playeroption_name>
+        <playeroption_value>0</playeroption_value>
+    </a3o_playeroptions></a3o>

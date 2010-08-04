@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 
 class GameTypeTestSuite extends PHPUnit_Framework_TestSuite
 {

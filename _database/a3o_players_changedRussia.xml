@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 3.2.4
+- http://www.phpmyadmin.net
+-
+- Host: localhost
+- Erstellungszeit: 04. August 2010 um 21:06
+- Server Version: 5.1.41
+- PHP-Version: 5.3.1
+-->
+
+<!--
+- Datenbank: 'a3o'
+-->
+<a3o>
+  <!-- Tabelle a3o_players -->
+    <a3o_players>
+        <player_id>1</player_id>
+        <player_user>4</player_user>
+        <player_nation>1</player_nation>
+        <player_match>1</player_match>
+    </a3o_players>
+</a3o>

@@ -2,8 +2,8 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 require_once  'PHPUnit/Extensions/Database/DataSet/XmlDataSet.php';
-$basedir = dirname(__FILE__);
-require_once $basedir . '/Packages/GameState/GameStateSuite.php';
+define( 'BASEDIR', dirname(__FILE__) );
+require_once BASEDIR . '/Packages/GameState/GameStateSuite.php';
 
 class A3OTestSuite extends PHPUnit_Framework_TestSuite
 {
@@ -36,10 +36,11 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 		}
 		
 		$test_db = new PHPUnit_Extensions_Database_DefaultTester( new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection ( $pdo, 'a3o' ) );
-		$test_db->setSetUpOperation( PHPUnit_Extensions_Database_Operation_Factory::CLEAN_INSERT( ) );
+		$test_db->setSetUpOperation( PHPUnit_Extensions_Database_Operation_Factory::CLEAN_INSERT( true ) );
 		$test_db->setTearDownOperation( PHPUnit_Extensions_Database_Operation_Factory::NONE( ) );
 		$xml = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( dirname(__FILE__) . '/_database/phpunit_a3o.xml' );
 		$test_db->setDataSet( $xml );
+
 		// make sure the database is intialized with the default values (important for registries!)
 		$test_db->onSetUp( );
 		
