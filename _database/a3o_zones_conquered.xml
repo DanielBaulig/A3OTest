@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 3.2.4
+- http://www.phpmyadmin.net
+-
+- Host: localhost
+- Erstellungszeit: 05. August 2010 um 19:23
+- Server Version: 5.1.41
+- PHP-Version: 5.3.1
+-->
+
+<!--
+- Datenbank: 'a3o'
+-->
+<a3o>
+  <!-- Tabelle a3o_zones -->
+    <a3o_zones>
+        <zone_id>1</zone_id>
+        <zone_basezone>1</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>3</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>2</zone_id>
+        <zone_basezone>2</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>1</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>3</zone_id>
+        <zone_basezone>3</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>0</zone_owner>
+    </a3o_zones>
+    <a3o_zones>
+        <zone_id>4</zone_id>
+        <zone_basezone>4</zone_basezone>
+        <zone_match>1</zone_match>
+        <zone_owner>3</zone_owner>
+    </a3o_zones>
+</a3o>

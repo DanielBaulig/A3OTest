@@ -185,7 +185,7 @@ class BasicMatchZoneTest extends PHPUnit_Framework_TestCase
 					MatchZone::PIECES => array( 'Russia' => array( 'infantry' => array( 1 => 5 ) ) ),
 					MatchZone::OPTIONS => array( 'production' => 2 ),
 				),
-			),			
+			),	
 		);
 	}
 }
@@ -232,14 +232,64 @@ class MatchZoneStorerTests extends PHPUnit_Framework_TestCase
 			 array( 
 			 	array(			 	
 				 	MatchZone::NAME => 'Archangel', 
-				 	MatchZone::OWNER=> 1, 
+				 	MatchZone::OWNER=> 'Russia', 
 					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>5, 'tank'=>2, 'fighter'=>1 ) ),
 			 	),
-			 	'phpunit_a3o.xml',
-			 	'phpunit_a3o.xml',
+			 	'phpunit_a3o.xml',// a3o_zones
+			 	'phpunit_a3o.xml',// a3o_pieces
 			 ), 
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Russia', 
+					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>0, 'tank'=>0, 'fighter'=>0 ) ),
+			 	),
+			 	'phpunit_a3o.xml',// a3o_zonesd
+			 	'phpunit_a3o_pieces_zero.xml',// a3o_pieces
+			 ), 
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Russia', 
+					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>2, 'tank'=>4, 'fighter'=>10 ) ),
+			 	),
+			 	'phpunit_a3o.xml',// a3o_zones
+			 	'phpunit_a3o_pieces_mixed.xml',// a3o_pieces
+			 ), 
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Russia', 
+					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>5, 'tank'=>2, 'fighter'=>1, 'factory'=>1 ) ),
+			 	),
+			 	'phpunit_a3o.xml',// a3o_zones
+			 	'phpunit_a3o_pieces_with_factory.xml',// a3o_pieces
+			 ),
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Russia', 
+					MatchZone::PIECES=>array( 
+						'Russia' => array( 'infantry'=>5, 'tank'=>2, 'fighter'=>1), 
+						'Germany'=> array('infantry'=>4, 'tank'=> 4, 'fighter'=>3) 
+					),
+			 	),
+			 	'phpunit_a3o.xml',// a3o_zones
+			 	'phpunit_a3o_pieces_with_german_army.xml',// a3o_pieces
+			 ),
+			 array( 
+			 	array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Germany', 
+					MatchZone::PIECES=>array( 
+						'Russia' => array( 'infantry'=>0, 'tank'=>0, 'fighter'=>0), 
+						'Germany'=> array('infantry'=>0, 'tank'=> 1, 'fighter'=>2) 
+					),
+			 	),
+			 	'phpunit_a3o_zones_conquered.xml',// a3o_zones
+			 	'phpunit_a3o_pieces_conquered.xml',// a3o_pieces
+			 ),
 		);
-		//TODO: Add more test cases
 	}
 	
 	public function isUserProvider( )

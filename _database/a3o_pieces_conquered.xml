@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 3.2.4
+- http://www.phpmyadmin.net
+-
+- Host: localhost
+- Erstellungszeit: 05. August 2010 um 19:28
+- Server Version: 5.1.41
+- PHP-Version: 5.3.1
+-->
+
+<!--
+- Datenbank: 'a3o'
+-->
+<a3o>
+  <!-- Tabelle a3o_pieces -->
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>0</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>2</pieces_type>
+        <pieces_count>0</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>4</pieces_type>
+        <pieces_count>0</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>3</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>0</pieces_count>
+    </a3o_pieces><a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>3</pieces_nation>
+        <pieces_type>2</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces><a3o_pieces>
+        <pieces_zone>1</pieces_zone>
+        <pieces_nation>3</pieces_nation>
+        <pieces_type>4</pieces_type>
+        <pieces_count>2</pieces_count>
+    </a3o_pieces><a3o_pieces>
+        <pieces_zone>2</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>1</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces>
+    <a3o_pieces>
+        <pieces_zone>2</pieces_zone>
+        <pieces_nation>1</pieces_nation>
+        <pieces_type>3</pieces_type>
+        <pieces_count>1</pieces_count>
+    </a3o_pieces>
+    
+    
+    
+</a3o>
