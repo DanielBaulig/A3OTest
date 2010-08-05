@@ -10,14 +10,14 @@ class A3GameTypeTestSuite extends PHPUnit_Framework_TestSuite
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
 		
-		$this->gameTypeFactory = GameTypeRegistry::getInstance( )->swapFactory( new A3GameTypePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-		$this->matchZoneFactory = MatchZoneRegistry::getInstance( )->swapFactory( new A3MatchZonePDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
+		//$this->gameTypeFactory = GameTypeRegistry::getInstance( )->swapFactory( new A3GameTypePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
+		//$this->matchZoneFactory = MatchZoneRegistry::getInstance( )->swapFactory( new A3MatchZonePDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
 	}
 	
 	public function tearDown()
 	{
-		GameTypeRegistry::getInstance( )->swapFactory( $this->gameTypeFactory );
-		MatchZoneRegistry::getInstance( )->swapFactory( $this->matchZoneFactory );
+		//GameTypeRegistry::getInstance( )->swapFactory( $this->gameTypeFactory );
+		//MatchZoneRegistry::getInstance( )->swapFactory( $this->matchZoneFactory );
 	}
 	
 	public static function suite( )
@@ -38,11 +38,12 @@ class A3GameTypeFactoryTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function testCreateProduct( )
 	{
-		$factory = new A3GameTypePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new A3GameTypePDOFactory( $this->pdo, $this->match );
 		$type = $factory->createSingleProduct( 'infantry' );
 		$this->assertType( 'A3GameType', $type );
 	}
@@ -55,6 +56,7 @@ class A3GameTypeTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	/**
@@ -63,7 +65,7 @@ class A3GameTypeTests extends PHPUnit_Framework_TestCase
 	public function testCantTraverse( $type, array $path, $nation, $allowCombat = false )
 	{
 		//$this->markTestSkipped();
-		$type = GameTypeRegistry::getType( $type );
+		$type = $this->match->getType( $type );
 		$this->assertFalse( $type->canTraversePath( $path, $nation, $allowCombat ) );
 	}
 	
@@ -102,7 +104,7 @@ class A3GameTypeTests extends PHPUnit_Framework_TestCase
 	 */
 	public function testCanTraverse( $type, array $path, $nation, $allowCombat = false )
 	{
-		$type = GameTypeRegistry::getType( $type );
+		$type = $this->match->getType( $type );
 		$this->assertTrue( $type->canTraversePath( $path, $nation, $allowCombat ) );
 	}
 	

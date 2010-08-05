@@ -20,11 +20,12 @@ class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function testLoadAllNations( )
 	{
-		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, $this->match );
 		$nations = $factory->createAllProducts( );
 		$this->assertArrayHasKey( 'Russia' , $nations );
 		$this->assertArrayHasKey( 'Germany', $nations );
@@ -37,7 +38,7 @@ class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadNoNations( )
 	{
-		$factory = new GameNationPDOFactory( $this->pdo, -1 );
+		$factory = new GameNationPDOFactory( $this->pdo, new A3PDOMatchState($this->pdo, -1, 1) );
 		$nations = $factory->createAllProducts( );
 		$this->assertEquals( 0, count( $nations ) );
 	}
@@ -47,7 +48,7 @@ class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFailLoadSingleNation( $nation )
 	{
-		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, $this->match );
 		$this->setExpectedException( 'DomainException' );
 		$nation = $factory->createSingleProduct( $nation );
 	} 
@@ -75,7 +76,7 @@ class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLoadSingleNation( $nation )
 	{
-		$factory = new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameNationPDOFactory( $this->pdo, $this->match );
 		$nation = $factory->createSingleProduct( $nation );
 		$this->assertType( 'GameNation', $nation );
 	}
@@ -112,18 +113,9 @@ class GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
-	public function testReinitializationException( )
-	{
-		$this->setExpectedException( 'Exception' );		
-		GameNationRegistry::initializeRegistry( new GameNationPDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-	}
-	
-	public function testGetInstance( )
-	{
-		$this->assertType( 'GameNationRegistry', GameNationRegistry::getInstance( ) );	
-	}
 	
 	/**
 	 * @dataProvider invalidGetNationProvider
@@ -131,7 +123,7 @@ class GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	public function testInvalidGetNation( $nation )
 	{
 		$this->setExpectedException( 'DomainException' );
-		GameNationRegistry::getNation( $nation );
+		$this->match->getNation( $nation );
 	}
 	
 	public function invalidGetNationProvider( )
@@ -157,10 +149,10 @@ class GameNationRegistryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testValidGetNation( $nation )
 	{
-		$aNation = GameNationRegistry::getNation( $nation );
+		$aNation = $this->match->getNation( $nation );
 		$this->assertType( 'GameNation', $aNation );
 		
-		$sameNation = GameNationRegistry::getNation( $nation );
+		$sameNation = $this->match->getNation( $nation );
 		$this->assertType( 'GameNation', $sameNation );
 		
 		// the registry should return the same object instance!
@@ -199,10 +191,11 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	public function testInstanciation( )
 	{
-		$nation = new GameNation( array( GameNation::NAME => 'Test Land', GameNation::ALLIANCES => array( ) ) );
+		$nation = new GameNation( $this->match, array( GameNation::NAME => 'Test Land', GameNation::ALLIANCES => array( ) ) );
 		$this->assertType( 'GameNation', $nation ); 
 	}
 	
@@ -211,7 +204,7 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testExceptionIsAlly( $ally )
 	{
-		$nation = GameNationRegistry::getNation( 'Russia' );
+		$nation = $this->match->getNation( 'Russia' );
 		$this->setExpectedException( 'DomainException' );
 		$nation->isAllyOf( $ally );
 	}
@@ -233,7 +226,7 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsAlly( $ally )
 	{
-		$nation = GameNationRegistry::getNation( 'Russia' );
+		$nation = $this->match->getNation( 'Russia' );
 		$this->assertTrue( $nation->isAllyOf( $ally ) );
 	}
 	
@@ -253,7 +246,7 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsNotAlly( $ally )
 	{
-		$nation = GameNationRegistry::getNation( 'Russia' );
+		$nation = $this->match->getNation( 'Russia' );
 		$this->assertFalse( $nation->isAllyOf( $ally ) );
 	}
 	
@@ -272,7 +265,7 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsInAlliance( $alliance )
 	{
-		$nation = GameNationRegistry::getNation( 'Russia' );
+		$nation = $this->match->getNation( 'Russia' );
 		$this->assertTrue( $nation->isInAlliance( $alliance) );
 	}
 	
@@ -290,7 +283,7 @@ class BasicGameNationTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsNotInAlliance( $alliance )
 	{
-		$nation = GameNationRegistry::getNation( 'Russia' );
+		$nation = $this->match->getNation( 'Russia' );
 		$this->assertFalse( $nation->isInAlliance( $alliance) );
 	}
 	

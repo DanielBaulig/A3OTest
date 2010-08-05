@@ -21,11 +21,12 @@ class GameAllianceFactoryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function testLoadAllAlliances( )
 	{
-		$factory = new GameAlliancePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameAlliancePDOFactory( $this->pdo, $this->match );
 		$alliances = $factory->createAllProducts( );
 		$this->assertArrayHasKey( 'Axis' , $alliances );
 		$this->assertArrayHasKey( 'Allies' , $alliances );
@@ -35,7 +36,7 @@ class GameAllianceFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadNoAlliance( )
 	{
-		$factory = new GameAlliancePDOFactory( $this->pdo, -1 );
+		$factory = new GameAlliancePDOFactory( $this->pdo, new A3PDOMatchState($this->pdo, -1, 1 ) );
 		$alliances = $factory->createAllProducts( );
 		$this->assertEquals( 0, count( $alliances ) );
 	}
@@ -45,7 +46,7 @@ class GameAllianceFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFailLoadSingleAlliance( $alliance )
 	{
-		$factory = new GameAlliancePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameAlliancePDOFactory( $this->pdo, $this->match );
 		$this->setExpectedException( 'DomainException' );
 		$factory->createSingleProduct( $alliance );
 	}
@@ -73,7 +74,7 @@ class GameAllianceFactoryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testLoadSingleAlliance( $alliance )
 	{
-		$factory = new GameAlliancePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID );
+		$factory = new GameAlliancePDOFactory( $this->pdo, $this->match );
 		$alliance = $factory->createSingleProduct( $alliance );
 		$this->assertType( 'GameAlliance' , $alliance );
 	}
@@ -101,28 +102,18 @@ class GameAllianceRegistryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
-	
-	public function testReinitializationException( )
-	{
-		$this->setExpectedException( 'Exception' );
-		GameAllianceRegistry::initializeRegistry( new GameAlliancePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-	}
-	
-	public function testGetInstance( )
-	{
-		$this->assertType( 'GameAllianceRegistry', GameAllianceRegistry::getInstance( ) );
-	}
-	
+
 	/**
 	 * @dataProvider getValidAllianceProvider
 	 */
 	public function testGetValidAlliance( $alliance )
 	{
-		$aAlliance = GameAllianceRegistry::getAlliance( $alliance );
+		$aAlliance = $this->match->getAlliance( $alliance );
 		$this->assertType( 'GameAlliance', $aAlliance );
 		
-		$sameAlliance = GameAllianceRegistry::getAlliance( $alliance );
+		$sameAlliance = $this->match->getAlliance( $alliance );
 		$this->assertType( 'GameAlliance', $sameAlliance );
 		
 		$this->assertTrue( $aAlliance === $sameAlliance );
@@ -149,7 +140,7 @@ class GameAllianceRegistryTest extends PHPUnit_Framework_TestCase
 	public function testGetFailAlliance( $alliance )
 	{
 		$this->setExpectedException( 'DomainException' );
-		GameAllianceRegistry::getAlliance( $alliance );
+		$this->match->getAlliance( $alliance );
 	}
 	
 	public function getFailAllianceProvider( )
@@ -172,6 +163,7 @@ class GameAllianceTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	/**
@@ -179,7 +171,7 @@ class GameAllianceTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsNotMember( $nation )
 	{
-		$alliance = GameAllianceRegistry::getAlliance( 'Allies' );
+		$alliance = $this->match->getAlliance( 'Allies' );
 		$this->assertFalse( $alliance->hasMember( $nation ) );
 	}
 	
@@ -212,7 +204,7 @@ class GameAllianceTest extends PHPUnit_Framework_TestCase
 	public function testForEachMember( )
 	{
 		$this->eachLoops = 0;
-		$alliance = GameAllianceRegistry::getAlliance( 'UDSSR' );
+		$alliance = $this->match->getAlliance( 'UDSSR' );
 		$alliance->forEachMember( array( $this, 'forEachUDSSR' ) );
 		$this->assertEquals( 1, $this->eachLoops );
 	}
@@ -228,7 +220,7 @@ class GameAllianceTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testhasMember( $nation )
 	{
-		$alliance = GameAllianceRegistry::getAlliance( 'Allies' );
+		$alliance = $this->match->getAlliance( 'Allies' );
 		$this->assertTrue( $alliance->hasMember( $nation ) );
 	}
 	

@@ -10,14 +10,15 @@ class A3MatchZoneTestSuite extends PHPUnit_Framework_TestSuite
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
 		
-		$this->gameTypeFactory = GameTypeRegistry::getInstance( )->swapFactory( new A3GameTypePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-		$this->matchZoneFactory = MatchZoneRegistry::getInstance( )->swapFactory( new A3MatchZonePDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
+		
+		//$this->gameTypeFactory = GameTypeRegistry::getInstance( )->swapFactory( new A3GameTypePDOFactory( $this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
+		//$this->matchZoneFactory = MatchZoneRegistry::getInstance( )->swapFactory( new A3MatchZonePDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
 	}
 	
 	public function tearDown()
 	{
-		GameTypeRegistry::getInstance( )->swapFactory( $this->gameTypeFactory );
-		MatchZoneRegistry::getInstance( )->swapFactory( $this->matchZoneFactory );
+		//GameTypeRegistry::getInstance( )->swapFactory( $this->gameTypeFactory );
+		//MatchZoneRegistry::getInstance( )->swapFactory( $this->matchZoneFactory );
 	}
 	
 	public static function suite( )
@@ -36,11 +37,12 @@ class A3MatchZoneFactoryTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function testCreateSingle( )
 	{
-		$factory = new A3MatchZonePDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$factory = new A3MatchZonePDOFactory( $this->pdo, $this->match );
 		$zone = $factory->createSingleProduct( 'Archangel' );
 		$this->assertType( 'A3MatchZone', $zone );
 	}
@@ -51,6 +53,7 @@ class A3MatchZoneRegistryTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	/**
@@ -58,7 +61,7 @@ class A3MatchZoneRegistryTests extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetElement( $zone )
 	{
-		$zone = MatchZoneRegistry::getZone( $zone );
+		$zone = $this->match->getZone( $zone );
 		$this->assertType( 'A3MatchZone', $zone );
 	}
 	

@@ -8,8 +8,7 @@ class MatchPlayerTestSuite extends PHPUnit_Framework_TestSuite
 		$suite->addTestSuite( 'MatchPlayerFactoryTests' );
 		$suite->addTestSuite( 'MatchPlayerRegistryTests' );
 		$suite->addTestSuite( 'MatchPlayerTests' );
-		$suite->addTestSuite( 'MatchPlayerStorerTests' );
-		
+		$suite->addTestSuite( 'MatchPlayerStorerTests' );		
 		
 		return $suite;
 	}
@@ -22,6 +21,7 @@ class MatchPlayerFactoryTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 
@@ -31,7 +31,7 @@ class MatchPlayerFactoryTests extends PHPUnit_Framework_TestCase
 	public function testExceptionCreateElement( $nation )
 	{
 		$this->setExpectedException( 'DomainException' );
-		$factory = new MatchPlayerPDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$factory = new MatchPlayerPDOFactory( $this->pdo, $this->match );
 		$factory->createSingleProduct( $nation );
 	}
 	
@@ -55,7 +55,7 @@ class MatchPlayerFactoryTests extends PHPUnit_Framework_TestCase
 	 */
 	public function testCreateElement( $nation )
 	{
-		$factory = new MatchPlayerPDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$factory = new MatchPlayerPDOFactory( $this->pdo, $this->match );
 		$player = $factory->createSingleProduct( $nation );
 		$this->assertType( 'MatchPlayer', $player );
 	}
@@ -71,7 +71,7 @@ class MatchPlayerFactoryTests extends PHPUnit_Framework_TestCase
 	
 	public function testCreateAllElements( )
 	{
-		$factory = new MatchPlayerPDOFactory( $this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$factory = new MatchPlayerPDOFactory( $this->pdo, $this->match );
 		$players = $factory->createAllProducts( );
 		$this->assertArrayHasKey( 'Russia' , $players );
 		$this->assertType( 'MatchPlayer' , $players['Russia'] );
@@ -86,6 +86,7 @@ class MatchPlayerRegistryTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	/**
@@ -93,7 +94,7 @@ class MatchPlayerRegistryTests extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetPlayer( $nation )
 	{
-		$player = MatchPlayerRegistry::getPlayer( $nation );
+		$player = $this->match->getPlayer( $nation );
 		$this->assertType( 'MatchPlayer', $player );
 	}
 	
@@ -114,6 +115,7 @@ class MatchPlayerTests extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	/**
@@ -121,7 +123,7 @@ class MatchPlayerTests extends PHPUnit_Framework_TestCase
 	 */
 	public function testIsUser( $nation, $user )
 	{
-		$player = MatchPlayerRegistry::getPlayer( $nation );
+		$player = $this->match->getPlayer( $nation );
 		
 		$this->assertTrue( $player->isUser( $user ) );
 	}
@@ -145,6 +147,7 @@ class MatchPlayerStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
 		$this->test_db = $this->sharedFixture['test_db'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function tearDown( )
@@ -160,8 +163,8 @@ class MatchPlayerStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->test_db->onSetUp( );
 		
-		$player = new MatchPlayer( $playerData );
-		$storer = new MatchPlayerPDOStorer($this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$player = new MatchPlayer( $this->match, $playerData );
+		$storer = new MatchPlayerPDOStorer($this->pdo, $this->match->getMatchId( ) );
 
 		$xml_postStore = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedTemplate );
 		
@@ -215,8 +218,8 @@ class MatchPlayerStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->test_db->onSetUp( );
 		
-		$player = new MatchPlayer( $playerData );
-		$storer = new MatchPlayerPDOStorer($this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$player = new MatchPlayer( $this->match, $playerData );
+		$storer = new MatchPlayerPDOStorer($this->pdo, $this->match->getMatchId( ) );
 
 		$xml_postStore = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedTemplate );
 		
@@ -267,14 +270,14 @@ class MatchPlayerStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->test_db->onSetUp( );
 		
-		$player = new MatchPlayer( 
+		$player = new MatchPlayer( $this->match, 
 			array(			 	
 				 	MatchPlayer::NATION => 'Russia', 
 				 	MatchPlayer::USER=> 1, 
 				 	MatchPlayer::OPTIONS=> array( 'Technology' => 1 )
 			) 
 		);
-		$storer = new MatchPlayerPDOStorer($this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$storer = new MatchPlayerPDOStorer($this->pdo, $this->match->getMatchId( ) );
 
 		$xml_postStore = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/phpunit_a3o_playeroptions_cleared.xml' );
 

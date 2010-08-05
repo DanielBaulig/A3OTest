@@ -21,11 +21,12 @@ class BasicGameTypeFactoryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function testInstanciation( )
 	{
-		$factory = new GameTypePDOFactory( $this->pdo, self::TEST_GAME_ID );
+		$factory = new GameTypePDOFactory( $this->pdo, $this->match );
 		$this->assertType( 'GameTypePDOFactory', $factory );
 		return $factory;
 	}
@@ -58,19 +59,10 @@ class BasicGameTypeRegistryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
-	}
-	public function testInitializationFail( )
-	{
-		$this->setExpectedException( 'Exception' );
-		GameTypeRegistry::initializeRegistry( new GameTypePDOFactory($this->pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-	}
-	public function testGetInstance( )
-	{
-		$registry = GameTypeRegistry::getInstance( );
-		$this->assertType( 'GameTypeRegistry', $registry );
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	public function testGetType( ){
-		$type = GameTypeRegistry::getType( 'infantry' );
+		$type = $this->match->getType( 'infantry' );
 		$this->assertType( 'GameType', $type );
 	}
 }
@@ -82,7 +74,9 @@ class BasicGameTypeTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
+	//TODO: Add some meaningful tests!
 	public function testNothing( )
 	{
 		$this->assertTrue(true);

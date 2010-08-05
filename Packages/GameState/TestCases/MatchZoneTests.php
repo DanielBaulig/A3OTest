@@ -21,13 +21,14 @@ class BasicMatchZoneFactoryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];	
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	const TEST_MATCH_ID = 1;
 	
 	public function testInstanciation( )
 	{
-		$factory = new MatchZonePDOFactory( $this->pdo, self::TEST_MATCH_ID );
+		$factory = new MatchZonePDOFactory( $this->pdo, $this->match );
 		$this->assertType( 'MatchZonePDOFactory', $factory );
 		return $factory;
 	}
@@ -53,6 +54,7 @@ class BasicMatchZoneRegistryTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];	
+		$this->match = $this->sharedFixture['match_state'];
 	}
 
 	/**
@@ -61,7 +63,7 @@ class BasicMatchZoneRegistryTest extends PHPUnit_Framework_TestCase
 	public function testExceptionGetZone( $zone )
 	{
 		$this->setExpectedException( 'DomainException' );
-		MatchZoneRegistry::getZone( $zone );
+		$this->match->getZone( $zone );
 	}
 	
 	public function exceptionGetZoneProvider( )
@@ -87,7 +89,7 @@ class BasicMatchZoneRegistryTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetZone( $zone )
 	{
-		$zone = MatchZoneRegistry::getZone( $zone );
+		$zone = $this->match->getZone( $zone );
 		$this->assertType( 'MatchZone', $zone );
 		
 	}
@@ -115,13 +117,14 @@ class BasicMatchZoneTest extends PHPUnit_Framework_TestCase
 	public function setUp( )
 	{
 		$this->pdo = $this->sharedFixture['pdo'];	
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	/**
 	 * @dataProvider instanciationProvider
 	 */
 	public function testInstanciation( array $data )
 	{
-		$zone = new MatchZone( $data );
+		$zone = new MatchZone( $this->match, $data );
 		$this->assertType( 'MatchZone', $zone );
 	}
 	
@@ -130,7 +133,7 @@ class BasicMatchZoneTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testCountPieces( $expected, $nation, $type )
 	{
-		$zone = MatchZoneRegistry::getZone( 'Archangel' );
+		$zone = $this->match->getZone( 'Archangel' );
 		
 		$this->assertEquals( $expected, $zone->countPieces( $nation, $type ) );
 	}
@@ -199,6 +202,7 @@ class MatchZoneStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->pdo = $this->sharedFixture['pdo'];
 		$this->test_db = $this->sharedFixture['test_db'];
+		$this->match = $this->sharedFixture['match_state'];
 	}
 	
 	public function tearDown( )
@@ -214,8 +218,8 @@ class MatchZoneStorerTests extends PHPUnit_Framework_TestCase
 	{
 		$this->test_db->onSetUp( );
 		
-		$player = new MatchZone( $zoneData );
-		$storer = new MatchZonePDOStorer($this->pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$player = new MatchZone( $this->match, $zoneData );
+		$storer = new MatchZonePDOStorer($this->pdo, $this->match->getMatchId( ) );
 
 		$xml_postStoreZones = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedZones );
 		$xml_postStorePieces = new PHPUnit_Extensions_Database_DataSet_XmlDataSet( BASEDIR . '/_database/' . $expectedPieces );

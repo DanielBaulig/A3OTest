@@ -46,13 +46,10 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 		
 		$this->sharedFixture['test_db'] = $test_db;
 		$this->sharedFixture['pdo'] = $pdo;
+		
 		echo "established.\n";
 		
-		MatchZoneRegistry::initializeRegistry( new MatchZonePDOFactory( $pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
-		GameTypeRegistry::initializeRegistry( new GameTypePDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-		GameNationRegistry::initializeRegistry(  new GameNationPDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-		GameAllianceRegistry::initializeRegistry(  new GameAlliancePDOFactory( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID ) );
-		MatchPlayerRegistry::initializeRegistry(  new MatchPlayerPDOFactory($pdo, BasicMatchZoneFactoryTest::TEST_MATCH_ID ) );
+		$this->sharedFixture['match_state'] = new A3PDOMatchState( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
 	}
 	
 	protected function tearDown( )
