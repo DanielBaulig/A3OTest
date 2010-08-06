@@ -1,6 +1,6 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once $basedir . '/../A3O/include/classes/MatchState/A3/A3MatchState.php';
+require_once $basedir . '/../A3O/include/classes/MatchBoard/A3/AAR/AARMatchBoard.php';
 
 class GameStateSuite  extends PHPUnit_Framework_TestSuite
 {
@@ -16,6 +16,8 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 			'A3/A3MatchZoneTests.php',
 			'A3/A3GameTypeTests.php',
 			'MatchPlayerTests.php',
+			'AAR/AARMatchPlayerTests.php',
+			'AAR/AARTests.php',
 		);
 
 		
@@ -32,6 +34,8 @@ class GameStateSuite  extends PHPUnit_Framework_TestSuite
 			A3MatchZoneTestSuite::suite(),
 			A3GameTypeTestSuite::suite(),
 			MatchPlayerTestSuite::suite(),
+			AARMatchPlayerTestSuite::suite(),
+			AARTestSuite::suite(),
 			
 		);
 		

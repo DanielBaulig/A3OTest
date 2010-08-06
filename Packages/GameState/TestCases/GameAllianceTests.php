@@ -36,7 +36,7 @@ class GameAllianceFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadNoAlliance( )
 	{
-		$factory = new GameAlliancePDOFactory( $this->pdo, new A3PDOMatchState($this->pdo, -1, 1 ) );
+		$factory = new GameAlliancePDOFactory( $this->pdo, new A3PDOMatchBoard($this->pdo, -1, 1 ) );
 		$alliances = $factory->createAllProducts( );
 		$this->assertEquals( 0, count( $alliances ) );
 	}

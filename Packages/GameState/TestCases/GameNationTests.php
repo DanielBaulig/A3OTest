@@ -38,7 +38,7 @@ class GameNationFactoryTest extends PHPUnit_Framework_TestCase
 	
 	public function testLoadNoNations( )
 	{
-		$factory = new GameNationPDOFactory( $this->pdo, new A3PDOMatchState($this->pdo, -1, 1) );
+		$factory = new GameNationPDOFactory( $this->pdo, new A3PDOMatchBoard($this->pdo, -1, 1) );
 		$nations = $factory->createAllProducts( );
 		$this->assertEquals( 0, count( $nations ) );
 	}
