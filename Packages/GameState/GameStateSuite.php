@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once 'PHPUnit/Framework.php';
 require_once $basedir . '/../A3O/include/classes/MatchBoard/A3/AAR/AARMatchBoard.php';
 

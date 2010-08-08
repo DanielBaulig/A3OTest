@@ -4,6 +4,7 @@ require_once 'PHPUnit/Extensions/Database/TestCase.php';
 require_once  'PHPUnit/Extensions/Database/DataSet/XmlDataSet.php';
 define( 'BASEDIR', dirname(__FILE__) );
 require_once BASEDIR . '/Packages/GameState/GameStateSuite.php';
+require_once BASEDIR . '/Packages/MatchController/MatchControllerSuite.php';
 
 class A3OTestSuite extends PHPUnit_Framework_TestSuite
 {
@@ -11,6 +12,8 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 	{
 		$suite = new A3OTestSuite( 'Complete A3O TestSuite' );
 		$suite->addTest( GameStateSuite::suite( ) );
+		$suite->addTest( MatchControllerSuite::suite( ) );
+		
 		return $suite;
 	}
 	
@@ -49,7 +52,7 @@ class A3OTestSuite extends PHPUnit_Framework_TestSuite
 		
 		echo "established.\n";
 		
-		$this->sharedFixture['match_state'] = new A3PDOMatchState( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
+		$this->sharedFixture['match_state'] = new A3PDOMatchBoard( $pdo, BasicGameTypeFactoryTest::TEST_GAME_ID, BasicMatchZoneFactoryTest::TEST_MATCH_ID );
 	}
 	
 	protected function tearDown( )
