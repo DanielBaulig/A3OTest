@@ -22,8 +22,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testRemoveCasualtiesStates( )
 	{
-		$start = new A3RemoveCasualties( $this->match );
-		$next = new A3RemoveCasualties( $this->match );
+		$start = new A3RemoveCasualties( '', $this->match );
+		$next = new A3RemoveCasualties( '', $this->match );
 		$start->setUp( $next );
 		$state = $start->doEnter( );
 		$this->assertSame($state, $start);
@@ -35,9 +35,9 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testPressRetreat( )
 	{
-		$start = new A3PressRetreat( $this->match );
-		$press = new A3PressRetreat( $this->match );
-		$conclude = new A3PressRetreat( $this->match );
+		$start = new A3PressRetreat( '', $this->match );
+		$press = new A3PressRetreat( '', $this->match );
+		$conclude = new A3PressRetreat( '', $this->match );
 		$start->setUp( $conclude, $press );
 		$state = $start->doEnter( );
 		$this->assertSame($state, $start);
@@ -53,8 +53,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testOpeningFire( )
 	{
-		$start = new A3OpeningFire( $this->match );
-		$remove = new A3RemoveCasualties( $this->match );
+		$start = new A3OpeningFire( '', $this->match );
+		$remove = new A3RemoveCasualties( '', $this->match );
 
 		$start->setUp( $remove );
 		
@@ -64,8 +64,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testConcludeCombat( )
 	{
-		$start = new A3ConcludeCombat( $this->match );
-		$next = new A3ConcludeCombat( $this->match );
+		$start = new A3ConcludeCombat( '', $this->match );
+		$next = new A3ConcludeCombat( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -81,8 +81,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testResearch( )
 	{
-		$start = new A3Research( $this->match );
-		$next = new A3Research( $this->match );
+		$start = new A3Research( '', $this->match );
+		$next = new A3Research( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -102,8 +102,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testReinforcements( )
 	{
-		$start = new A3Reinforcements( $this->match );
-		$next = new A3Reinforcements( $this->match );
+		$start = new A3Reinforcements( '', $this->match );
+		$next = new A3Reinforcements( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -123,8 +123,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testCombatMovement( )
 	{
-		$start = new A3CombatMovement( $this->match );
-		$next = new A3CombatMovement( $this->match );
+		$start = new A3CombatMovement( '', $this->match );
+		$next = new A3CombatMovement( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -147,9 +147,9 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testCombat( )
 	{
-		$start = new A3Combat( $this->match );
-		$next = new A3Combat( $this->match );
-		$conduct = new A3Combat( $this->match );
+		$start = new A3Combat( '', $this->match );
+		$next = new A3Combat( '', $this->match );
+		$conduct = new A3Combat( '', $this->match );
 
 		$start->setUp( $next, $conduct );
 		
@@ -169,8 +169,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testNonCombatMovement( )
 	{
-		$start = new A3NonCombatMovement( $this->match );
-		$next = new A3NonCombatMovement( $this->match );
+		$start = new A3NonCombatMovement( '', $this->match );
+		$next = new A3NonCombatMovement( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -190,8 +190,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testMobilize( )
 	{
-		$start = new A3Mobilize( $this->match );
-		$next = new A3Mobilize( $this->match );
+		$start = new A3Mobilize( '', $this->match );
+		$next = new A3Mobilize( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -210,8 +210,8 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testCollectIncome( )
 	{
-		$start = new A3CollectIncome( $this->match );
-		$next = new A3Mobilize( $this->match );
+		$start = new A3CollectIncome( '', $this->match );
+		$next = new A3Mobilize( '', $this->match );
 
 		$start->setUp( $next );
 		
@@ -221,10 +221,10 @@ class StateTest extends PHPUnit_Framework_TestCase
 	
 	public function testTurnSequence( )
 	{
-		$turnSequence = new TurnSequence( array( 'Russia', 'Germany' ) );
-		$combatMovement = new A3CombatMovement($this->match);
-		$combat = new A3Combat($this->match);
-		$nonCombatMovement = new A3NonCombatMovement($this->match);
+		$turnSequence = new TurnSequence( '', array( 'Russia', 'Germany' ) );
+		$combatMovement = new A3CombatMovement('', $this->match);
+		$combat = new A3Combat('', $this->match);
+		$nonCombatMovement = new A3NonCombatMovement('', $this->match);
 		
 		$turnSequence->setUp( $combatMovement  ,$combatMovement );
 		$combatMovement->setUp($combat);
