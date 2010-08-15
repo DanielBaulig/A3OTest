@@ -1,5 +1,7 @@
 <?php
 
+require_once $basedir . '/../A3O/include/classes/MatchController/A3/A3Games/AAR/AARBuilder.php';
+
 class StateTestSuite extends PHPUnit_Framework_TestSuite
 {
 	public static function suite( )
@@ -13,6 +15,7 @@ class StateTestSuite extends PHPUnit_Framework_TestSuite
 class StateTest extends PHPUnit_Framework_TestCase
 {
 	protected $pdo;
+	protected $match;
 	
 	public function setUp( )
 	{
@@ -256,5 +259,180 @@ class StateTest extends PHPUnit_Framework_TestCase
 		$currenState = $currenState->doAction( new Action( null, A3NonCombatMovement::END_NONCOMBAT_MOVEMENT, null )  );
 		// player switch should occur
 		$this->assertSame($combatMovement, $currenState);
+	}
+	
+	public function testConductCombatBuilder()
+	{
+		$builder = new AARConductCombatBuilder( $this->match , true );
+		$builder->createNewConductCombatMachine( );
+		$builder->buildOpeningFire( 'Opening Fire' );
+		$builder->buildOpeningFireRemoveCasualties( 'Opening Fire Remove Casualties' );
+		$builder->buildAttackersFire( 'Attackers Fire' );
+		$builder->buildDefendersFire( 'Defenders Fire' );
+		$builder->buildCombatRemoveCasualties( 'Remove Casualties' );
+		$builder->buildPressRetreat( 'Press or Retreat' );
+		$builder->buildConcludeCombat( 'Conclude Combat' );
+		
+		$statemachine = $builder->getConductCombatMachine( new A3GameOver('Game Over', $this->match ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Opening Fire', $statename);
+		$statemachine = $statemachine->doEnter( );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action(null, 'pressattack', array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action(null, 'retreat', array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Conclude Combat', $statename);
+		$statename = 'Attackers Fire';
+		$statemachine = $builder->getStateSavedIn( $statename );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Attackers Fire', $statename );
+	}
+	
+	public function testConductCombatFactory( )
+	{
+		$factory = new A3ConductCombatBuildDirector( );
+		$factory->setConductCombatBuilder( new AARConductCombatBuilder( $this->match, true ) );
+		$statemachine = $factory->createStateMachine( new A3GameOver( 'Game Over', $this->match ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Opening Fire', $statename);
+		$statemachine = $statemachine->doEnter( );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action(null, A3PressRetreat::PRESS_ATTACK, array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action(null, A3PressRetreat::RETREAT, array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Conclude Combat', $statename);
+		$statename = 'Attackers Fire';
+		$statemachine = $factory->getStateSavedIn( $statename );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Attackers Fire', $statename );
+	}
+	
+	public function testTurnPhasesBuilder( )
+	{
+		$factory = new A3ConductCombatBuildDirector( );
+		$factory->setConductCombatBuilder( new AARConductCombatBuilder( $this->match, true ) );
+		$builder = new AARTurnPhasesBuilder( $this->match, $factory );
+		$builder->createNewTurnPhasesMachine( );
+		$builder->buildResearch( 'Research' );
+		$builder->buildReinforcements( 'Reinforcements' );
+		$builder->buildCombatMovement( 'Combat Movement' );
+		$builder->buildCombat( 'Combat' );
+		$builder->buildNonCombatMovement( 'Non-Combat Movement' );
+		$builder->buildMobilize( 'Mobilize' );
+		$builder->buildCollectIncome( 'Collect Income' );
+		$statemachine = $builder->getTurnPhasesMachine( new A3GameOver( 'Game Over', $this->match ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+		$statemachine = $statemachine->doEnter( );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Research::END_RESEARCH, array( )));
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Reinforcements', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Reinforcements::END_REINFORCEMENTS, array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3CombatMovement::MOVE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3CombatMovement::END_COMBAT_MOVEMENT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3PressRetreat::RETREAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Conclude Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3ConcludeCombat::END_COMBAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Combat::CONDUCT_ALL, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Non-Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3NonCombatMovement::MOVE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Non-Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3NonCombatMovement::END_NONCOMBAT_MOVEMENT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Mobilize', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Mobilize::PLACE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Mobilize', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Mobilize::PLACE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Game Over', $statename);
+	}
+	
+	public function testTurnPhasesFactory()
+	{
+		$combatFactory = new A3ConductCombatBuildDirector( );
+		$combatFactory->setConductCombatBuilder( new AARConductCombatBuilder( $this->match, true ) );
+		$builder = new AARTurnPhasesBuilder( $this->match, $combatFactory );
+		$factory = new A3TurnPhasesBuildDirector( );
+		$factory->setTurnPhaseBuilder( $builder );
+		$statemachine = $factory->createStateMachine( new A3GameOver('Game Over', $this->match ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+		$statemachine = $statemachine->doEnter( );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Research::END_RESEARCH, array( )));
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Reinforcements', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Reinforcements::END_REINFORCEMENTS, array( ) ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3CombatMovement::MOVE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3CombatMovement::END_COMBAT_MOVEMENT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Press or Retreat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3PressRetreat::RETREAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Conclude Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3ConcludeCombat::END_COMBAT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Combat::CONDUCT_ALL, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Non-Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3NonCombatMovement::MOVE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Non-Combat Movement', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3NonCombatMovement::END_NONCOMBAT_MOVEMENT, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Mobilize', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Mobilize::PLACE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Mobilize', $statename);
+		$statemachine = $statemachine->doAction( new Action( null, A3Mobilize::PLACE_PIECES, null ) );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Game Over', $statename);
+	}
+	
+	public function testMatchMachineBuilder( )
+	{
+		$combatFactory = new A3ConductCombatBuildDirector( );
+		$combatFactory->setConductCombatBuilder( new AARConductCombatBuilder( $this->match, true ) );
+		$builder = new AARTurnPhasesBuilder( $this->match, $combatFactory );
+		$factory = new A3TurnPhasesBuildDirector( );
+		$factory->setTurnPhaseBuilder( $builder );
+		
+		$builder = new AARMatchMachineBuilder( $this->match, new A3BidMachineBuildDirector( ), $factory );
+		$builder->createNewMatchMachine( );
+		$builder->buildSetup( 'Setup' );
+		$builder->buildGameOver( 'Game Over' );
+		$statemachine = $builder->getMatchMachine(  );
 	}
 }
