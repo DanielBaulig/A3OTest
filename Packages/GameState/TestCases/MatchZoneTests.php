@@ -211,6 +211,23 @@ class MatchZoneStorerTests extends PHPUnit_Framework_TestCase
 		$this->test_db->onSetUp( );
 	}
 	
+	public function testStreamStorer(   )
+	{
+		$this->test_db->onSetUp( );
+
+		$zone = new MatchZone( $this->match, array(			 	
+				 	MatchZone::NAME => 'Archangel', 
+				 	MatchZone::OWNER=> 'Russia', 
+					MatchZone::PIECES=>array( 'Russia' => array( 'infantry'=>5, 'tank'=>2, 'fighter'=>1 ) ),
+		));
+		$stream = fopen('php://temp', 'w+');
+		$storer = new MatchZoneStreamStorer($stream, true);
+		$storer->store($zone);
+		fseek($stream, 0);
+		$s = fgets($stream);
+		$this->assertEquals('"Archangel":{"name":"Archangel","owner":"Russia","pieces":{"Russia":{"infantry":5,"tank":2,"fighter":1}}}', $s);
+	}
+	
 	/**
 	 * @dataProvider storeZoneProvider
 	 */
