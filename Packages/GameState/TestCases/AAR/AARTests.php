@@ -25,7 +25,7 @@ class AARTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testApplyModification( $obj, $mod, $exp )
 	{
-		$this->assertEquals( $exp, AARPDOMatchBoard::applyModification( $obj, $mod) );
+		$this->assertEquals( $exp, AARGameType::applyModification( $obj, $mod) );
 	}
 	
 	public function applyModificationProvider( )
