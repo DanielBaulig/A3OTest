@@ -222,45 +222,6 @@ class StateTest extends PHPUnit_Framework_TestCase
 		$this->assertSame($state, $next);
 	}
 	
-	public function testTurnSequence( )
-	{
-		$turnSequence = new TurnSequence( '', array( 'Russia', 'Germany' ) );
-		$combatMovement = new A3CombatMovement('', $this->match);
-		$combat = new A3Combat('', $this->match);
-		$nonCombatMovement = new A3NonCombatMovement('', $this->match);
-		
-		$turnSequence->setUp( $combatMovement  ,$combatMovement );
-		$combatMovement->setUp($combat);
-		$combat->setUp($nonCombatMovement, $combat);
-		$nonCombatMovement->setUp( $turnSequence );
-		
-		$currenState = $turnSequence->doEnter( );
-		$this->assertSame($combatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3CombatMovement::MOVE_PIECES, null ) );
-		$this->assertSame($combatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3CombatMovement::UNDO_MOVE, null ) );
-		$this->assertSame($combatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3CombatMovement::MOVE_PIECES, null ) );
-		$this->assertSame($combatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3CombatMovement::END_COMBAT_MOVEMENT, null ) );
-		$this->assertSame($combat, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null )  );
-		$this->assertSame($combat, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null )  );
-		$this->assertSame($combat, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null )  );
-		$this->assertSame($combat, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null )  );
-		$this->assertSame($combat, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3Combat::CONDUCT_COMBAT, null )  );
-		$this->assertSame($nonCombatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3NonCombatMovement::MOVE_PIECES, null )  );
-		$this->assertSame($nonCombatMovement, $currenState);
-		$currenState = $currenState->doAction( new Action( null, A3NonCombatMovement::END_NONCOMBAT_MOVEMENT, null )  );
-		// player switch should occur
-		$this->assertSame($combatMovement, $currenState);
-	}
-	
 	public function testConductCombatBuilder()
 	{
 		$builder = new AARConductCombatBuilder( $this->match , true );
@@ -421,6 +382,14 @@ class StateTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals( 'Game Over', $statename);
 	}
 	
+	public function testBidMachineBuilder( )
+	{
+		$bidMachine = new A3BidMachineBuildDirector();
+		$bid = $bidMachine->createStateMachine( new UnimplementedState('end') );
+		$bid->saveTo(&$statename);
+		$this->assertEquals('bid', $statename);
+	}
+	
 	public function testMatchMachineBuilder( )
 	{
 		$combatFactory = new A3ConductCombatBuildDirector( );
@@ -429,10 +398,40 @@ class StateTest extends PHPUnit_Framework_TestCase
 		$factory = new A3TurnPhasesBuildDirector( );
 		$factory->setTurnPhaseBuilder( $builder );
 		
-		$builder = new AARMatchMachineBuilder( $this->match, new A3BidMachineBuildDirector( ), $factory );
+		$builder = new AARMatchMachineBuilder( $this->match, $factory, new A3BidMachineBuildDirector( ) );
 		$builder->createNewMatchMachine( );
 		$builder->buildSetup( 'Setup' );
 		$builder->buildGameOver( 'Game Over' );
 		$statemachine = $builder->getMatchMachine(  );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Setup', $statename);
+		$statemachine = $statemachine->doEnter( );
+		
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+	}
+	
+	public function testMatchMachineBuildDirector( )
+	{
+		$director = new A3MatchMachineBuildDirector();
+		$combatFactory = new A3ConductCombatBuildDirector( );
+		$combatFactory->setConductCombatBuilder( new AARConductCombatBuilder( $this->match, true ) );
+		$builder = new AARTurnPhasesBuilder( $this->match, $combatFactory );
+		$factory = new A3TurnPhasesBuildDirector( );
+		$factory->setTurnPhaseBuilder( $builder );
+		
+		$builder = new AARMatchMachineBuilder( $this->match, $factory, new A3BidMachineBuildDirector( ) );
+		$director->setMatchMachineBuilder( $builder );
+		$statemachine = $director->createStateMachine( new UnimplementedState( ' ') );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Setup', $statename);
+		$statemachine = $statemachine->doEnter( );
+		
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Research', $statename);
+		
+		$statemachine = $director->getStateSavedIn( 'Combat Movement' );
+		$statemachine->saveTo( &$statename );
+		$this->assertEquals( 'Combat Movement', $statename);
 	}
 }
